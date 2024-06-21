@@ -1,6 +1,5 @@
 package utils;
 
-import ttp.TTP1Instance;
 import ttp.TTPInstance;
 
 import java.io.*;
@@ -58,13 +57,10 @@ public class GraphHelper {
 
       // delete coordinates file
       fileCoord.delete();
-
       return arcTable;
-
     } catch (IOException e) {
       e.printStackTrace();
     }
-
     return null;
   }
 
@@ -84,14 +80,11 @@ public class GraphHelper {
     }
 
     for (int i = 0; i < nbCities; i++) {
-
       for (int j = 1; j <= k - 1; j++) {
         HashSet<Integer> currentSet = new HashSet(tri2[i]);
         for (int x : currentSet) {
-
           tri2[i].addAll(tri[x]);
         }
-
       }
     }
 

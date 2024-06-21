@@ -1,11 +1,6 @@
 package mantesting;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,7 +82,6 @@ public class Main {
       System.out.println("caught exception: " + e.getCause());
     } catch (TimeoutException e) {
       future.cancel(true);
-
     }
 
     // wait for execution to be done

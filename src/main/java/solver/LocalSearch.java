@@ -33,7 +33,6 @@ public class LocalSearch extends SearchHeuristic {
 
   public LocalSearch(TTP1Instance ttp) {
     super(ttp);
-    // generate Delaunay triangulation
     if (!System.getProperty("os.name").contains("Windows")) {
       candidates = GraphHelper.delaunay(ttp);
 
@@ -43,7 +42,6 @@ public class LocalSearch extends SearchHeuristic {
   @Override
   public void setTTP(TTP1Instance ttp) {
     super.setTTP(ttp);
-    // generate Delaunay triangulation
     if (!System.getProperty("os.name").contains("Windows")) {
       candidates = GraphHelper.delaunay(ttp);
     }
@@ -63,15 +61,6 @@ public class LocalSearch extends SearchHeuristic {
     return this.name + suf;
   }
 
-  /**
-   * KP pre-processing
-   *
-   * base on the item insertion heuristic in MATLS
-   * described in "improving efficiency of heuristics..."
-   * 
-   * uses only delta_1 and delta_2 approximations
-   * in order to limit the number of inserted items
-   */
   public TTPSolution insertT2(TTPSolution sol) {
 
     // TTP data
@@ -248,7 +237,6 @@ public class LocalSearch extends SearchHeuristic {
             jBest = j;
             ftBest = ft;
             improved = true;
-
             if (firstfit)
               break;
           }
@@ -258,10 +246,7 @@ public class LocalSearch extends SearchHeuristic {
         if (firstfit && improved)
           break;
       } // END FOR i
-
-      // ===================================
       // update if improvement
-      // ===================================
       if (improved) {
 
         // apply 2-opt move

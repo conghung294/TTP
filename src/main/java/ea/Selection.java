@@ -3,9 +3,6 @@ package ea;
 import solver.Evolution;
 import ttp.TTPSolution;
 
-/**
- * Created by kyu on 11/4/15.
- */
 public class Selection {
 
   // Selects candidate tour for crossover

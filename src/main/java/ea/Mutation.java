@@ -1,14 +1,9 @@
 package ea;
 
 import ttp.TTP1Instance;
-
 import ttp.TTPSolution;
 import java.util.Random;
-import java.util.TreeSet;
 
-/**
- * Created by kyu on 12/6/15.
- */
 public class Mutation {
 
   public static int randInt(int min, int max) {

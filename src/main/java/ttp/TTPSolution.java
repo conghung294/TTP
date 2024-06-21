@@ -1,9 +1,5 @@
 package ttp;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class TTPSolution {
@@ -77,57 +73,6 @@ public class TTPSolution {
     this.mapCI = Arrays.copyOf(s2.mapCI, s2.mapCI.length);
   }
 
-  public TTPSolution(String filePath) {
-    File solFile = new File(filePath);
-    BufferedReader br = null;
-
-    int nbCities = 0, nbItems = 0;
-
-    try {
-      br = new BufferedReader(new FileReader(solFile));
-      String line;
-
-      // scan tour
-      while ((line = br.readLine()) != null) {
-
-        // number of cities
-        if (line.startsWith("DIMENSION")) {
-          line = line.substring(line.indexOf(":") + 1);
-          line = line.replaceAll("\\s+", "");
-          nbCities = Integer.parseInt(line);
-        }
-
-        // number of items
-        if (line.startsWith("NUMBER OF ITEMS")) {
-          line = line.substring(line.indexOf(":") + 1);
-          line = line.replaceAll("\\s+", "");
-          nbItems = Integer.parseInt(line);
-        }
-
-        if (line.startsWith("TOUR_SECTION")) {
-          this.tour = new int[nbCities];
-          for (int j = 0; j < nbCities; j++) {
-            line = br.readLine();
-            tour[j] = Integer.parseInt(line);
-          }
-        }
-
-        if (line.startsWith("PP_SECTION")) {
-          this.pickingPlan = new int[nbItems];
-          for (int j = 0; j < nbItems; j++) {
-            line = br.readLine();
-            pickingPlan[j] = Integer.parseInt(line);
-          }
-        }
-      } // end while
-
-      br.close();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-    this.initSolution(tour, pickingPlan);
-  }
-
   @Override
   public String toString() {
     // the tour
@@ -186,27 +131,6 @@ public class TTPSolution {
 
   public void setPickingPlan(int[] pickingPlan) {
     this.pickingPlan = pickingPlan;
-  }
-
-  public String output() {
-    String s = "DIMENSION : " + tour.length + "\n" +
-        "NUMBER OF ITEMS : " + pickingPlan.length + "\n" +
-        "\n";
-
-    s += "TOUR_SECTION\n";
-    for (int x : tour) {
-      s += x + "\n";
-    }
-    s += "\n";
-
-    s += "PP_SECTION\n";
-    for (int x : pickingPlan) {
-      s += x + "\n";
-    }
-
-    s += "EOF";
-
-    return s;
   }
 
   public void printStats() {

@@ -1,11 +1,8 @@
 package solver;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import ttp.TTP1Instance;
-import utils.ConfigHelper;
 
 public class Constructive extends SearchHeuristic {
 
@@ -17,11 +14,6 @@ public class Constructive extends SearchHeuristic {
     super(ttp);
   }
 
-  /**
-   * generate random tour
-   * 
-   * @return
-   */
   public int[] randomTour() {
 
     int[] tour = new int[ttp.getNbCities()];
@@ -39,50 +31,6 @@ public class Constructive extends SearchHeuristic {
     return tour;
   }
 
-  /**
-   * use Lin-Kernighan TSP tour
-   * uses hardcoded tours
-   */
-  public int[] linkernTour() {
-    int nbCities = ttp.getNbCities();
-    int[] tour = new int[nbCities];
-
-    String fileName = ttp.getTspName();
-    String dirName = ConfigHelper.getProperty("lktours");
-    fileName += ".linkern.tour";
-
-    File file = new File(dirName + "/" + fileName);
-    BufferedReader br = null;
-
-    try {
-      br = new BufferedReader(new FileReader(file));
-      String line;
-
-      // scan tour
-      while ((line = br.readLine()) != null) {
-
-        if (line.startsWith("TOUR_SECTION")) {
-
-          for (int j = 0; j < nbCities; j++) {
-            line = br.readLine();
-            tour[j] = Integer.parseInt(line);
-          }
-        }
-      } // end while
-
-      br.close();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-
-    return tour;
-  }
-
-  /**
-   * empty knapsack
-   * 
-   * @return picking plan filled with zeros
-   */
   public int[] zerosPickingPlan() {
 
     // picking plan

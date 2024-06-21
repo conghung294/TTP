@@ -2,14 +2,7 @@ package ea;
 
 import solver.SearchHeuristic;
 import ttp.TTP1Instance;
-import ttp.TTPSolution;
-
 import utils.GraphHelper;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 public class Initialization extends SearchHeuristic {

@@ -1,9 +1,7 @@
 package ttp;
 
 import java.io.*;
-
 import java.util.ArrayList;
-
 import utils.CityCoordinates;
 
 public abstract class TTPInstance {
@@ -29,61 +27,6 @@ public abstract class TTPInstance {
 
   // item clusters per city
   protected ArrayList<Integer>[] clusters;
-
-  @Override
-  public String toString() {
-
-    String s = "";
-    if (nbCities < 20 && nbItems < 20) {
-      // coordinates
-      s += "cities | coordinates:\n";
-      for (int i = 0; i < this.nbCities; i++) {
-        s += String.format("%6d | ", i + 1) + this.coordinates[i] + "\n";
-      }
-      s += "\n";
-      // distance matrix
-      s += "distance matrix:\n";
-      for (int i = 0; i < this.nbCities; i++) {
-        for (int j = 0; j < this.nbCities; j++) {
-          s += String.format("%5d", this.getDist()[i][j]);
-        }
-        s += "\n";
-      }
-      s += "\n";
-
-      // items
-      s += "items   : ";
-      for (int i = 0; i < this.nbItems; i++) {
-        s += String.format("%5d", i + 1);
-      }
-      s += "\n";
-      s += "values  : ";
-      for (int i = 0; i < this.nbItems; i++) {
-        s += String.format("%5d", this.profits[i]);
-      }
-      s += "\n";
-      s += "weights : ";
-      for (int i = 0; i < this.nbItems; i++) {
-        s += String.format("%5d", this.weights[i]);
-      }
-      s += "\n";
-      s += "city ref: ";
-      for (int i = 0; i < this.nbItems; i++) {
-        s += String.format("%5d", this.availability[i]);
-      }
-      s += "\n\n";
-
-    }
-
-    s += "name     : " + this.name + "\n";
-    s += "#cities  : " + this.nbCities + "\n";
-    s += "#items   : " + this.nbItems + "\n";
-    s += "capacity : " + this.capacity + "\n";
-    s += "min speed: " + this.getMinSpeed() + "\n";
-    s += "max speed: " + this.getMaxSpeed() + "\n";
-
-    return s;
-  }
 
   public void setDist(long[][] dist) {
     this.dist = dist;
@@ -156,7 +99,6 @@ public abstract class TTPInstance {
   // used to simulate the distance matrix
   public long distFor(int i, int j) {
     if (dist == null) {
-      // return Math.round(this.coordinates[i].distanceEuclid(this.coordinates[j]));
       return (long) Math.ceil(this.coordinates[i].distanceEuclid(this.coordinates[j]));
     }
     return dist[i][j];

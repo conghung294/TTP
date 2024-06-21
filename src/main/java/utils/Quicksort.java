@@ -18,23 +18,12 @@ public class Quicksort<T extends Comparable<T>> {
     return indices;
   }
 
-  /**
-   * apply quicksort
-   */
   public void sort() {
     sort(0, this.data.length - 1);
   }
 
-  /**
-   * apply quicksort
-   * 
-   * @param low
-   * @param high
-   */
   private void sort(int low, int high) {
-
     int i = low, j = high;
-
     // Get the pivot element from the middle of the list
     T pivot = data[low + (high - low) / 2];
 
@@ -62,9 +51,6 @@ public class Quicksort<T extends Comparable<T>> {
       sort(i, high);
   }
 
-  /**
-   * swap two elements
-   */
   private void swap(int i, int j) {
 
     T tmpd = data[i];

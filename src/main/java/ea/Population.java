@@ -3,11 +3,6 @@ package ea;
 import solver.SearchHeuristic;
 import ttp.TTPSolution;
 
-/**
- * Population of sol
- *
- * Created by kyu on 10/24/15.
- */
 public class Population extends SearchHeuristic {
 
   // population of solutions

@@ -1,7 +1,6 @@
 package ttp;
 
 import java.io.*;
-
 import utils.CityCoordinates;
 import utils.ConfigHelper;
 

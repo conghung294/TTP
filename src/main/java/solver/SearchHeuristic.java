@@ -1,7 +1,6 @@
 package solver;
 
 import ttp.TTP1Instance;
-import ttp.TTPSolution;
 
 public abstract class SearchHeuristic {
 
