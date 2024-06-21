@@ -5,9 +5,6 @@ import ttp.TTP1Instance;
 import ttp.TTPSolution;
 import utils.Quicksort;
 
-/**
- * Created by kyu on 12/29/15.
- */
 public class MA2B extends Evolution {
 
   public MA2B() {
@@ -18,21 +15,15 @@ public class MA2B extends Evolution {
     super(ttp);
   }
 
-  @Override
   public TTPSolution search() {
 
-    // ===============================================
     // determine GA params
-    // ===============================================
     // number of selected individuals
     int selectSize = (int) (SELECTION_RATE * POP_SIZE);
-
     int nbCities = ttp.getNbCities();
     int nbItems = ttp.getNbItems();
 
-    // ===============================================
     // generate initial population
-    // ===============================================
     // to construct initial solutions
     Constructive construct = new Constructive(ttp);
     Initialization init = new Initialization(ttp);
@@ -46,10 +37,10 @@ public class MA2B extends Evolution {
     pop.sol[0] = new TTPSolution(
         construct.randomTour(),
         construct.zerosPickingPlan());
-    // use one kick LK to initialize the tours
+
     for (int i = 1; i < POP_SIZE; i++) {
       pop.sol[i] = new TTPSolution(
-          init.rlinkern(),
+          init.randomTour(),
           construct.zerosPickingPlan());
       // sleep for 2 ms to randomize
       try {
@@ -61,7 +52,7 @@ public class MA2B extends Evolution {
     }
 
     // use local search
-    LocalSearch ls = new CS2SA(ttp);
+    LocalSearch ls = new LocalSearch(ttp);
     // reduce LS time
     ls.maxIterTSKP = 50;
     ls.maxIterKRP = 50;
@@ -69,7 +60,7 @@ public class MA2B extends Evolution {
     // apply LS for all
     for (int i = 0; i < POP_SIZE; i++) {
       ttp.objective(pop.sol[i]);
-      // if (nbItems < 100000) pop.sol[i] = ls.fast2opt(pop.sol[i]);
+
       // initialize pp
       pop.sol[i] = ls.insertT2(pop.sol[i]);
       // simple bit-flip on KRP
@@ -78,9 +69,7 @@ public class MA2B extends Evolution {
 
     }
 
-    // ===============================================
     // start EA search
-    // ===============================================
     double bestSoFar = Double.MIN_VALUE;
     int nbGen = 0;
     int nbIdleSteps = 0;
@@ -91,11 +80,8 @@ public class MA2B extends Evolution {
 
       nbGen++;
       nbIdleSteps++;
-      // Deb.echo("NBGEN: "+nbGen);
 
-      // ===============================================
       // get & sort fitness, use indices
-      // ===============================================
       Double[] fits = new Double[POP_SIZE];
       for (int i = 0; i < POP_SIZE; i++) {
         fits[i] = pop.sol[i].ob;
@@ -119,9 +105,7 @@ public class MA2B extends Evolution {
       int j = POP_SIZE - 1;
       offpopSize = 0;
 
-      // ===============================================
       // Genetic evolution
-      // ===============================================
       for (int i = 0; i < selectSize; i++) {
 
         /* Select parents */
@@ -134,7 +118,7 @@ public class MA2B extends Evolution {
         /* Apply local search */
         double lsp = Math.random();
         if (lsp < LS_RATE) {
-          // Deb.echo("APPLY LS");
+
           c = ls.fast2opt(c);
           c = ls.lsBitFlip(c);
         }
@@ -156,26 +140,20 @@ public class MA2B extends Evolution {
 
         // if not existent
         if (!identical) {
-          // Deb.echo("~~==============================~~ " + c.ob);
 
           // add to offspring population
           offpop.sol[offpopSize++] = c;
         }
         // use mutation to eliminate premature convergence
         else {
-          // Deb.echo("IDENTICAL: " + c.ob);
+
           int[] x;
           x = Mutation.doubleBridge(c.getTour());
           x = Mutation.doubleBridge(x);
           c.setTour(x);
 
-          // Deb.echo("APPLY MUTATION PP");
-          // c = Mutation.randomFlips(c, MUTATION_STRENGTH_PP, ttp); // objective included
-
           // create new pick plan
           c = ls.insertT2(c);
-
-          // Deb.echo("ID. APPLY LS");
           c = ls.fast2opt(c);
           c = ls.lsBitFlip(c);
 
@@ -184,9 +162,8 @@ public class MA2B extends Evolution {
         }
       }
 
-      // ===============================================
       // Add offspring to population
-      // ===============================================
+
       for (int i = 0; i < offpopSize; i++) {
         TTPSolution c = offpop.sol[i];
         // replace worst solutions
@@ -196,9 +173,8 @@ public class MA2B extends Evolution {
       // stop when no improvements
     } while (nbGen < MAX_GEN && nbIdleSteps < MAX_IDLE_STEPS);
 
-    // ===============================================
     // apply LS for all
-    // ===============================================
+
     ls.maxIterTSKP = 300;
     ls.maxIterKRP = 300;
     for (int i = 0; i < POP_SIZE; i++) {
@@ -207,7 +183,7 @@ public class MA2B extends Evolution {
       pop.sol[i] = ls.fast2opt(pop.sol[i]);
       // simple bit-flip on KRP
       pop.sol[i] = ls.lsBitFlip(pop.sol[i]);
-      // Deb.echo(i+" DONE !");
+
     }
 
     return pop.fittest();

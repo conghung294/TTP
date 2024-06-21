@@ -1,17 +1,11 @@
 package ttp;
 
 import java.io.*;
-import java.nio.file.Files;
+
 import java.util.ArrayList;
 
 import utils.CityCoordinates;
-import utils.Deb;
 
-/**
- * TTP instance
- * 
- * @author kyu
- */
 public abstract class TTPInstance {
 
   protected String name;

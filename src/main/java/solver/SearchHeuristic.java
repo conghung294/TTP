@@ -3,24 +3,39 @@ package solver;
 import ttp.TTP1Instance;
 import ttp.TTPSolution;
 
-/**
- * single solution based
- *
- * @author kyu
- *
- */
-public abstract class SearchHeuristic extends TTPHeuristic {
+public abstract class SearchHeuristic {
 
   protected int maxIterTSKP = Integer.MAX_VALUE;
   protected int maxIterKRP = Integer.MAX_VALUE;
 
+  protected TTP1Instance ttp;
+  protected String name;
+
   public SearchHeuristic() {
-    super();
+    this.name = this.getClass().getSimpleName();
+
   }
-  
+
   public SearchHeuristic(TTP1Instance ttp) {
-    super(ttp);
+    this();
+    this.ttp = ttp;
   }
-  
-  public abstract TTPSolution search();
+
+  // heuristic name
+  public void setName(String logfile) {
+    this.name = logfile;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  // TTP access
+  public void setTTP(TTP1Instance ttp) {
+    this.ttp = ttp;
+  }
+
+  public TTP1Instance getTTP() {
+    return ttp;
+  }
 }

@@ -2,15 +2,9 @@ package ea;
 
 import ttp.TTP1Instance;
 import ttp.TTPSolution;
-import utils.Deb;
-
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TreeSet;
 
-/**
- * Created by kyu on 12/24/15.
- */
 public class Cross {
 
   // maximal preservative tour
@@ -33,9 +27,7 @@ public class Cross {
     // int[] c2 = new Tour(nbCities);
 
     /*
-     * ==================================
      * PART I: tour
-     * ==================================
      */
     // generate 2 crossover cut points
     Random gen = new Random();
@@ -44,9 +36,6 @@ public class Cross {
       pos1 = gen.nextInt(nbCities - 1);
       pos2 = gen.nextInt(nbCities - 1);
     } while (pos2 <= pos1 || pos1 == 0);
-
-    // pos1=2;pos2=6;
-    // Deb.echo(pos1 + "/" + pos2);
 
     // fill child's center
     for (int i = pos1; i <= pos2; i++) {
@@ -94,9 +83,7 @@ public class Cross {
     }
 
     /*
-     * ==================================
      * PART II: pick plan
-     * ==================================
      */
     // fill cpp1 with bits according to cities
     // j is item ID
@@ -120,7 +107,7 @@ public class Cross {
 
       // check only items contained in current city
       for (int j : clusters[ct1[i] - 1]) {
-        // Deb.echo( "c: "+ct1[i] + " >> " + (j+1) );
+
         cpp1[j] = pid == 1 ? pp1[j] : pp2[j];
         // if item is picked
         if (cpp1[j] != 0) {
@@ -138,12 +125,8 @@ public class Cross {
         break;
     }
 
-    // Deb.echo(">>>>>>>>>>>>>>"+wacc);
-
     // combine and return
     TTPSolution sol = new TTPSolution(ct1, cpp1);
-    // ttp.objective(sol);
-    // Deb.echo("f:"+sol.ob+" / we:"+sol.wend+" / w:"+(capacity-sol.wend));
 
     return sol;
   }

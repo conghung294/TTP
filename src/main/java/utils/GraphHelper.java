@@ -6,9 +6,6 @@ import ttp.TTPInstance;
 import java.io.*;
 import java.util.HashSet;
 
-/**
- * Created by kyu on 11/3/15.
- */
 public class GraphHelper {
 
   /**
@@ -20,7 +17,7 @@ public class GraphHelper {
 
     try {
       // write coordinates
-      String[] tspBase = ttp.getName().split("_",2);
+      String[] tspBase = ttp.getName().split("_", 2);
       String name = tspBase[0];
       String fileNameCoord = "bins/delaunay/" + name + ".coord";
       File fileCoord = new File(fileNameCoord);
@@ -32,7 +29,7 @@ public class GraphHelper {
       coordWriter.close();
 
       // execute delaunay program
-      String[] cmd = {"./bins/delaunay/dct.sh", fileNameCoord};
+      String[] cmd = { "./bins/delaunay/dct.sh", fileNameCoord };
       Runtime runtime = Runtime.getRuntime();
       Process proc = runtime.exec(cmd);
 
@@ -71,7 +68,6 @@ public class GraphHelper {
     return null;
   }
 
-
   /**
    * delaunay triangulation
    * k'th level
@@ -88,38 +84,18 @@ public class GraphHelper {
     }
 
     for (int i = 0; i < nbCities; i++) {
-      //Deb.echo(i+"-"+tri[i]);
-      for (int j=1; j <= k-1; j++) {
+
+      for (int j = 1; j <= k - 1; j++) {
         HashSet<Integer> currentSet = new HashSet(tri2[i]);
         for (int x : currentSet) {
-          //Deb.echo(">"+x+":"+tri[x]);
+
           tri2[i].addAll(tri[x]);
         }
-        //Deb.echo(i + "-" + tri2[i]);
+
       }
     }
 
     return tri2;
   }
 
-
-
-  // testing...
-  public static void main(String[] args) {
-
-//    final TTP1Instance ttp = new TTP1Instance("my-ttp/sample-data-10.ttp");
-//    final TTP1Instance ttp = new TTP1Instance("berlin52-ttp/berlin52_n51_bounded-strongly-corr_01.ttp");
-    final TTP1Instance ttp = new TTP1Instance("d15112-ttp/d15112_n15111_bounded-strongly-corr_01.ttp");
-    Deb.echo(ttp);
-
-    HashSet<Integer>[] delaunay = GraphHelper.delaunayKNN(ttp, 10);
-
-    int sum = 0;
-    for (HashSet<Integer> x : delaunay) {
-      sum += x.size();
-      //Deb.echo(x);
-    }
-
-    Deb.echo(sum/ttp.getNbCities());
-  }
 }

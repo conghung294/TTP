@@ -1,11 +1,5 @@
 package utils;
 
-/**
- * 2-OPT operations
- * 
- * @author kyu
- *
- */
 public class TwoOptHelper {
 
   /**

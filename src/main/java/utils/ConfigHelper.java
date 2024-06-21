@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by kyu on 12/5/15.
- */
 public class ConfigHelper {
 
   public static String getProperty(String name) {

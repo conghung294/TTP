@@ -1,6 +1,6 @@
 package ea;
 
-import solver.TTPHeuristic;
+import solver.SearchHeuristic;
 import ttp.TTPSolution;
 
 /**
@@ -8,7 +8,7 @@ import ttp.TTPSolution;
  *
  * Created by kyu on 10/24/15.
  */
-public class Population extends TTPHeuristic {
+public class Population extends SearchHeuristic {
 
   // population of solutions
   public TTPSolution[] sol;

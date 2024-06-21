@@ -15,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 import ttp.TTP1Instance;
 import ttp.TTPSolution;
-import utils.Deb;
 import solver.*;
 
 public class Main {
@@ -34,13 +33,6 @@ public class Main {
     // algorithm name
     final String algoName = args[1];
 
-    // output file
-    final String outputFile;
-    if (args.length >= 3)
-      outputFile = "./output/" + args[2];
-    else
-      outputFile = "./output/" + algoName + ".csv";
-
     // runtime limit
     long runtimeLimit = 60;
     if (args.length >= 4)
@@ -51,7 +43,7 @@ public class Main {
     int nbItems = ttp.getNbItems();
 
     /* algorithm to run */
-    final SearchHeuristic algo = new MA2B(ttp);
+    final MA2B algo = new MA2B(ttp);
 
     // runnable class
     class TTPRunnable implements Runnable {
@@ -95,7 +87,7 @@ public class Main {
       System.out.println("caught exception: " + e.getCause());
     } catch (TimeoutException e) {
       future.cancel(true);
-      // System.out.println("/!\\ Timeout");
+
     }
 
     // wait for execution to be done
@@ -106,22 +98,11 @@ public class Main {
     }
 
     // print results
-    Deb.echo(ttprun.resultLine);
-
-    // log results into text file
-    try {
-      File file = new File(outputFile);
-      if (!file.exists())
-        file.createNewFile();
-      Files.write(Paths.get(outputFile), (ttprun.resultLine + "\n").getBytes(), StandardOpenOption.APPEND);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    System.out.println(ttprun.resultLine);
 
     // save solution in a file
     try {
-      String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-      PrintWriter pw = new PrintWriter("./output/solutions/" + inst + "-" + algoName + "-" + currentTime + ".txt");
+      PrintWriter pw = new PrintWriter("./output/solutions/" + inst + "-" + algoName + "-" + ".txt");
       pw.println(ttprun.sx);
       pw.close();
     } catch (FileNotFoundException e) {

@@ -7,7 +7,7 @@ import java.util.Collections;
 import ttp.TTP1Instance;
 import utils.ConfigHelper;
 
-public class Constructive extends TTPHeuristic {
+public class Constructive extends SearchHeuristic {
 
   public Constructive() {
     super();
@@ -50,7 +50,6 @@ public class Constructive extends TTPHeuristic {
     String fileName = ttp.getTspName();
     String dirName = ConfigHelper.getProperty("lktours");
     fileName += ".linkern.tour";
-    // Deb.echo(dirName + "/" + fileName);
 
     File file = new File(dirName + "/" + fileName);
     BufferedReader br = null;

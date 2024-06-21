@@ -1,23 +1,11 @@
 package ttp;
 
-import utils.Deb;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * a TTP solution
- * 
- * tour: cities references, starts from 1
- * picking plan: '0' if the item is not picked,
- * 'city reference (i)' if picked (from city i)
- * 
- * @author kyu
- *
- */
 public class TTPSolution {
 
   private int[] tour;
@@ -223,21 +211,21 @@ public class TTPSolution {
 
   public void printStats() {
 
-    Deb.echo("============");
-    Deb.echo(" STATISTICS ");
-    Deb.echo("============");
-    Deb.echo("objective   : " + this.ob);
-    Deb.echo("final time  : " + this.ft);
-    Deb.echo("final weight: " + this.wend);
-    Deb.echo("final profit: " + this.fp);
+    System.out.println("============");
+    System.out.println(" STATISTICS ");
+    System.out.println("============");
+    System.out.println("objective   : " + this.ob);
+    System.out.println("final time  : " + this.ft);
+    System.out.println("final weight: " + this.wend);
+    System.out.println("final profit: " + this.fp);
 
     int cmpItems = 0;
     int nbItems = this.pickingPlan.length;
     for (int x : this.pickingPlan)
       if (x != 0)
         cmpItems++;
-    Deb.echo("percent inserted: " + cmpItems + "/" + nbItems + "(" +
+    System.out.println("percent inserted: " + cmpItems + "/" + nbItems + "(" +
         String.format("%.2f", (cmpItems * 100.0) / nbItems) + "%)");
-    Deb.echo("============");
+    System.out.println("============");
   }
 }

@@ -3,9 +3,6 @@ package ea;
 import ttp.TTP1Instance;
 
 import ttp.TTPSolution;
-import utils.Deb;
-import utils.RandGen;
-
 import java.util.Random;
 import java.util.TreeSet;
 
@@ -14,6 +11,14 @@ import java.util.TreeSet;
  */
 public class Mutation {
 
+  public static int randInt(int min, int max) {
+
+    Random rand = new Random();
+    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+    return randomNum;
+  }
+
   // mutate using double bridge
   public static int[] doubleBridge(int[] sol) {
 
@@ -21,9 +26,9 @@ public class Mutation {
     int n = sol.length;
     int[] newsol = new int[n];
 
-    j = RandGen.randInt(n / 4, n / 2 - 1);
-    k = RandGen.randInt(n / 2, 3 * n / 4 - 1);
-    l = RandGen.randInt(3 * n / 4, n - 2);
+    j = randInt(n / 4, n / 2 - 1);
+    k = randInt(n / 2, 3 * n / 4 - 1);
+    l = randInt(3 * n / 4, n - 2);
 
     // construct mutated solution
     newsol[0] = sol[0];
@@ -56,12 +61,12 @@ public class Mutation {
     int nbBits = (int) strength * pp.length;
     int r;
     for (int i = 0; i < nbBits; i++) {
-      r = RandGen.randInt(0, pp.length - 1);
+      r = randInt(0, pp.length - 1);
       pp[r] = pp[r] != 0 ? 0 : A[r];
     }
     ttp.objective(sol);
     if (sol.wend < 0) {
-      Deb.echo("BIG PROBLEM ! STOP MUTATION, RECOVER SAVED COPY...");
+
       sol = copy;
     }
     return sol;
