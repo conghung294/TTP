@@ -2,7 +2,6 @@ package ea;
 
 import solver.Evolution;
 import ttp.TTPSolution;
-import utils.Deb;
 
 /**
  * Created by kyu on 11/4/15.
@@ -31,14 +30,13 @@ public class Selection {
     for (int i = 0; i < Evolution.TOURNAMENT_SIZE; i++) {
       do {
         randomId = (int) (Math.random() * Evolution.POP_SIZE);
-      } while (pop.sol[randomId].ob==parents[0].ob);
+      } while (pop.sol[randomId].ob == parents[0].ob);
       tournament.sol[i] = pop.sol[randomId];
     }
     parents[1] = tournament.fittest();
 
     return parents;
   }
-
 
   // TODO implement & test simple random selection
   public static TTPSolution[] random(Population pop) {

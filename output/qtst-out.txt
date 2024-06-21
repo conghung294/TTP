@@ -1,7 +1,0 @@
-null
-dsj1000_n999_bounded-strongly-corr_01.ttp 144219 4.304
-dsj1000_n999_bounded-strongly-corr_01.ttp 144219 4.495
-dsj1000_n999_bounded-strongly-corr_01.ttp 144219 4.029
-a280_n279_bounded-strongly-corr_01.ttp 17610 100.261
-a280_n279_bounded-strongly-corr_01.ttp 17735 100.687
-a280_n279_bounded-strongly-corr_01.ttp 17776 100.205

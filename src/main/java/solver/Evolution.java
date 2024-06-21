@@ -17,8 +17,8 @@ public abstract class Evolution extends SearchHeuristic {
     super(ttp);
   }
 
-  public static final int MAX_GEN = 1000000; // basically doesn't matter much...
-  public static final int MAX_IDLE_STEPS = 10000;
+  public static final int MAX_GEN = 10000; // basically doesn't matter much...
+  public static final int MAX_IDLE_STEPS = 1000;
 
   // GA params
   public static final double MUTATION_RATE = .2;

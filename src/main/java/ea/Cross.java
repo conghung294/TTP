@@ -11,7 +11,7 @@ import java.util.TreeSet;
 /**
  * Created by kyu on 12/24/15.
  */
-public class MPX2 {
+public class Cross {
 
   // maximal preservative tour
   // uniform picking plan
@@ -30,35 +30,36 @@ public class MPX2 {
     int nbItems = pp1.length;
 
     int[] ct1 = new int[nbCities];
-    //int[] c2 = new Tour(nbCities);
+    // int[] c2 = new Tour(nbCities);
 
-    /*==================================
+    /*
+     * ==================================
      * PART I: tour
-     *==================================*/
+     * ==================================
+     */
     // generate 2 crossover cut points
     Random gen = new Random();
     int pos1, pos2;
     do {
-      pos1 = gen.nextInt(nbCities-1);
-      pos2 = gen.nextInt(nbCities-1);
-    } while ( pos2<=pos1 || pos1==0 );
+      pos1 = gen.nextInt(nbCities - 1);
+      pos2 = gen.nextInt(nbCities - 1);
+    } while (pos2 <= pos1 || pos1 == 0);
 
-//    pos1=2;pos2=6;
-//    Deb.echo(pos1 + "/" + pos2);
+    // pos1=2;pos2=6;
+    // Deb.echo(pos1 + "/" + pos2);
 
     // fill child's center
-    for (int i=pos1; i<=pos2; i++) {
+    for (int i = pos1; i <= pos2; i++) {
       ct1[i] = pt2[i];
     }
 
-    int[] map = new int[nbCities+1];
+    int[] map = new int[nbCities + 1];
 
-    for (int i=pos1; i<=pos2; i++) {
-      if ( map[pt1[i]]==0 && map[pt2[i]]==0 ) {
+    for (int i = pos1; i <= pos2; i++) {
+      if (map[pt1[i]] == 0 && map[pt2[i]] == 0) {
         map[pt1[i]] = pt2[i];
         map[pt2[i]] = pt1[i];
-      }
-      else {
+      } else {
         if (map[pt1[i]] != 0) { // OK
 
           int tmp = map[pt2[i]];
@@ -68,7 +69,7 @@ public class MPX2 {
 
           if (tmp != 0) {
             map[tmp] = map[pt2[i]];
-            map[map[pt2[i]]] = tmp;//p1.tour[i];
+            map[map[pt2[i]]] = tmp;// p1.tour[i];
             map[pt2[i]] = 0;
           }
         }
@@ -82,32 +83,21 @@ public class MPX2 {
     }
 
     // fill child's allele
-    for (int i=0; i<nbCities; i++) {
+    for (int i = 0; i < nbCities; i++) {
       // jump to other allele
-      if (i==pos1) i=pos2+1;
+      if (i == pos1)
+        i = pos2 + 1;
 
       // affect mapped node if existing, parent node otherwise
-      ct1[i] = map[pt1[i]]!=0 ? map[pt1[i]] : pt1[i];
-      //c2.tour[i] = map[p2.tour[i]]!=0 ? map[p2.tour[i]] : p2.tour[i];
+      ct1[i] = map[pt1[i]] != 0 ? map[pt1[i]] : pt1[i];
+      // c2.tour[i] = map[p2.tour[i]]!=0 ? map[p2.tour[i]] : p2.tour[i];
     }
 
-//    //==================================
-//    // check resulting tour
-//    // for redundancies
-//    TreeSet<Integer> ts = new TreeSet<>();
-//    for(int cc:ct1) ts.add(cc);
-//    Deb.echo("OK? "+ts.size()+" / "+(ts.size()==nbCities));
-//    //==================================
-
-
-//    // no pick plan crossover...
-//    TTPSolution sol1 = new TTPSolution(ct1, pp1.clone());
-//    if (true) return sol1;
-
-
-    /*==================================
+    /*
+     * ==================================
      * PART II: pick plan
-     *==================================*/
+     * ==================================
+     */
     // fill cpp1 with bits according to cities
     // j is item ID
     // i is city ID
@@ -117,22 +107,21 @@ public class MPX2 {
     ArrayList<Integer>[] clusters = ttp.getClusters();
     int[] weights = ttp.getWeights();
     double capacity = ttp.getCapacity();
-    //for (int i=0; i<nbItems; i++) cpp1[i] = -1;
+    // for (int i=0; i<nbItems; i++) cpp1[i] = -1;
     int wacc = 0;
     int pid;
     boolean stopUX = false;
-    for (int i=1; i<nbCities; i++) {
-      if (i<pos1 || i>pos2) {
+    for (int i = 1; i < nbCities; i++) {
+      if (i < pos1 || i > pos2) {
         pid = 1;
-      }
-      else {
+      } else {
         pid = 2;
       }
 
       // check only items contained in current city
-      for (int j : clusters[ ct1[i]-1 ]) {
-//        Deb.echo( "c: "+ct1[i] + " >> " + (j+1) );
-        cpp1[j] = pid==1 ? pp1[j] : pp2[j];
+      for (int j : clusters[ct1[i] - 1]) {
+        // Deb.echo( "c: "+ct1[i] + " >> " + (j+1) );
+        cpp1[j] = pid == 1 ? pp1[j] : pp2[j];
         // if item is picked
         if (cpp1[j] != 0) {
           wacc += weights[j];
@@ -145,15 +134,16 @@ public class MPX2 {
         }
       }
       // enough items picked... get out
-      if (stopUX) break;
+      if (stopUX)
+        break;
     }
 
-//    Deb.echo(">>>>>>>>>>>>>>"+wacc);
+    // Deb.echo(">>>>>>>>>>>>>>"+wacc);
 
     // combine and return
     TTPSolution sol = new TTPSolution(ct1, cpp1);
-//    ttp.objective(sol);
-//    Deb.echo("f:"+sol.ob+" / we:"+sol.wend+" / w:"+(capacity-sol.wend));
+    // ttp.objective(sol);
+    // Deb.echo("f:"+sol.ob+" / we:"+sol.wend+" / w:"+(capacity-sol.wend));
 
     return sol;
   }

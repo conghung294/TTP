@@ -18,7 +18,7 @@ jar {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'mantesting.CLI'
+        attributes 'Main-Class': 'mantesting.Main'
     }
 }
 
