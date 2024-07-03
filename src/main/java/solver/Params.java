@@ -3,17 +3,17 @@ package solver;
 import ea.Population;
 import ttp.TTP1Instance;
 
-public abstract class Evolution extends SearchHeuristic {
+public abstract class Params extends SearchHeuristic {
 
-  public Evolution() {
+  public Params() {
     super();
   }
 
-  public Evolution(TTP1Instance ttp) {
+  public Params(TTP1Instance ttp) {
     super(ttp);
   }
 
-  public static final int MAX_GEN = 10000;
+  public static final int MAX_GEN = 100000;
   public static final int MAX_IDLE_STEPS = 1000;
 
   // GA params

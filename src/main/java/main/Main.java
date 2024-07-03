@@ -1,4 +1,4 @@
-package mantesting;
+package main;
 
 import java.io.*;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +17,7 @@ public class Main {
   public static void main(String[] args) {
 
     if (args.length < 2) {
-      args = new String[] { "a280_n279_bounded-strongly-corr_01.ttp", "ma2b" };
+      args = new String[] { "a51_n50_bounded-strongly-corr_01.ttp", "ma2b" };
     }
 
     String[] spl = args[0].split("_", 2);
@@ -35,10 +35,9 @@ public class Main {
 
     // TTP instance
     final TTP1Instance ttp = new TTP1Instance(spl[0] + "-ttp/" + inst);
-    int nbItems = ttp.getNbItems();
 
     /* algorithm to run */
-    final MA2B algo = new MA2B(ttp);
+    final GA algo = new GA(ttp);
 
     // runnable class
     class TTPRunnable implements Runnable {

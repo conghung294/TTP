@@ -30,13 +30,6 @@ public class TwoOptHelper {
     return vect[k];
   }
 
-  /**
-   * do 2opt arcs exchange
-   * 
-   * @param tour TSP tour
-   * @param i    beginning
-   * @param j    end
-   */
   public static void do2opt(int[] tour, int i, int j) {
 
     int tmp, N = (j - i + 1) / 2;

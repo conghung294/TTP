@@ -16,11 +16,6 @@ public class LocalSearch extends SearchHeuristic {
   protected TTPSolution s0;
   protected HashSet<Integer>[] candidates;
 
-  // initial solution
-  public void setS0(TTPSolution s0) {
-    this.s0 = s0;
-  }
-
   public TTPSolution getS0() {
     return s0;
   }
@@ -55,18 +50,11 @@ public class LocalSearch extends SearchHeuristic {
     firstfit = false;
   }
 
-  @Override
-  public String getName() {
-    String suf = this.firstfit ? "-FF" : "-BF";
-    return this.name + suf;
-  }
-
   public TTPSolution insertT2(TTPSolution sol) {
 
     // TTP data
     int nbCities = ttp.getNbCities();
     int nbItems = ttp.getNbItems();
-    long[][] D = ttp.getDist();
     int[] A = ttp.getAvailability();
     double maxSpeed = ttp.getMaxSpeed();
     double minSpeed = ttp.getMinSpeed();
@@ -121,7 +109,7 @@ public class LocalSearch extends SearchHeuristic {
     // loop & insert items
     int nbInserts = 0;
     wCurr = 0;
-    int v2 = 0, v3 = 0;
+
     for (itr = 0; itr < nbItems; itr++) {
 
       k = sortedItems[itr];
@@ -138,7 +126,6 @@ public class LocalSearch extends SearchHeuristic {
       // time approximations t2 (worst-case time)
       t2 = L[origBF] * (1 / (maxSpeed - C * (wCurr + ttp.weightOf(k))) - 1 / (maxSpeed - C * wCurr));
       if (ttp.profitOf(k) > R * t2) {
-        v2++;
         pickingPlan[k] = A[k];
         wCurr += ttp.weightOf(k);
         insertedItems[nbInserts++] = k;
@@ -161,7 +148,6 @@ public class LocalSearch extends SearchHeuristic {
 
     // TTP data
     int nbCities = ttp.getNbCities();
-    int nbItems = ttp.getNbItems();
     double maxSpeed = ttp.getMaxSpeed();
     double minSpeed = ttp.getMinSpeed();
     long capacity = ttp.getCapacity();
@@ -192,12 +178,6 @@ public class LocalSearch extends SearchHeuristic {
 
     // search params
     double threshold = -0.1;
-    if (nbItems >= 100000) {
-      threshold = -10;
-    }
-    if (nbCities >= 50000) { // ex. pla85000 based instances
-      threshold = -1000;
-    }
 
     // search
     do {
@@ -260,136 +240,6 @@ public class LocalSearch extends SearchHeuristic {
 
     // in order to compute sol.timeAcc
     // we need to use objective function
-    ttp.objective(sol);
-
-    return sol;
-  }
-
-  /**
-   * bit-flip search
-   *
-   * deal with the KRP sub-problem
-   * this function applies a simple bit-flip
-   */
-  public TTPSolution lsBitFlip(TTPSolution sol) {
-
-    // TTP data
-    int nbCities = ttp.getNbCities();
-    int nbItems = ttp.getNbItems();
-    int[] A = ttp.getAvailability();
-    double maxSpeed = ttp.getMaxSpeed();
-    double minSpeed = ttp.getMinSpeed();
-    long capacity = ttp.getCapacity();
-    double C = (maxSpeed - minSpeed) / capacity;
-    double R = ttp.getRent();
-
-    // initial solution data
-    int[] tour = sol.getTour();
-    int[] pickingPlan = sol.getPickingPlan();
-
-    // delta parameters
-    int deltaP, deltaW;
-
-    // best solution
-    double GBest = sol.ob;
-
-    // neighbor solution
-    long fp;
-    double ft, G;
-    long wc;
-    int origBF;
-    int k, r, kBest = 0;
-    int nbIter = 0;
-
-    boolean improved;
-
-    // start search
-    do {
-      improved = false;
-      nbIter++;
-
-      // browse items in the new order...
-      for (k = 0; k < nbItems; k++) {
-
-        // cleanup and stop execution if interrupted
-        if (Thread.currentThread().isInterrupted())
-          break;
-
-        // check if new weight doesn't exceed knapsack capacity
-        if (pickingPlan[k] == 0 && ttp.weightOf(k) > sol.wend)
-          continue;
-
-        // calculate deltaP and deltaW
-        if (pickingPlan[k] == 0) {
-          deltaP = ttp.profitOf(k);
-          deltaW = ttp.weightOf(k);
-        } else {
-          deltaP = -ttp.profitOf(k);
-          deltaW = -ttp.weightOf(k);
-        }
-        fp = sol.fp + deltaP;
-
-        // index where Bit-Flip happened
-        origBF = sol.mapCI[A[k] - 1];
-
-        // starting time
-        ft = origBF == 0 ? 0 : sol.timeAcc[origBF - 1];
-
-        // recalculate velocities from bit-flip city
-        for (r = origBF; r < nbCities; r++) {
-          wc = sol.weightAcc[r] + deltaW;
-          ft += ttp.distFor(tour[r] - 1, tour[(r + 1) % nbCities] - 1) / (maxSpeed - wc * C);
-        }
-
-        G = fp - ft * R;
-
-        // update best
-        if (G > GBest) {
-          kBest = k;
-          GBest = G;
-
-          improved = true;
-          if (firstfit)
-            break;
-        }
-
-      } // END FOR k
-
-      // update if improvement
-      if (improved) {
-
-        // bit-flip
-        pickingPlan[kBest] = pickingPlan[kBest] != 0 ? 0 : A[kBest];
-        // recover accumulation vectors
-        if (pickingPlan[kBest] != 0) {
-          deltaP = ttp.profitOf(kBest);
-          deltaW = ttp.weightOf(kBest);
-        } else {
-          deltaP = -ttp.profitOf(kBest);
-          deltaW = -ttp.weightOf(kBest);
-        }
-        fp = sol.fp + deltaP;
-        origBF = sol.mapCI[A[kBest] - 1];
-        ft = origBF == 0 ? 0 : sol.timeAcc[origBF - 1];
-        for (r = origBF; r < nbCities; r++) {
-          // recalculate velocities from bit-flip city
-          wc = sol.weightAcc[r] + deltaW;
-          ft += ttp.distFor(tour[r] - 1, tour[(r + 1) % nbCities] - 1) / (maxSpeed - wc * C);
-          // recover wacc and tacc
-          sol.weightAcc[r] = wc;
-          sol.timeAcc[r] = ft;
-        }
-        G = fp - ft * R;
-        sol.ob = G;
-        sol.fp = fp;
-        sol.ft = ft;
-        sol.wend = capacity - sol.weightAcc[nbCities - 1];
-
-      }
-
-    } while (improved && nbIter < maxIterKRP);
-
-    // in order to recover all history vectors
     ttp.objective(sol);
 
     return sol;
