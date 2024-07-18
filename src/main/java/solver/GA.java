@@ -106,12 +106,6 @@ public class GA extends Params {
         TTPSolution c = Cross.crossover(p[0], p[1], ttp);
         ttp.objective(c);
 
-        /* Apply local search */
-        double lsp = Math.random();
-        if (lsp < LS_RATE) {
-          c = ls.fast2opt(c);
-        }
-
         /* add to offspring population */
         // check if already in offpop
         boolean identical = false;
@@ -140,7 +134,6 @@ public class GA extends Params {
           c.setTour(x);
           // create new pick plan
           c = ls.insertT2(c);
-          c = ls.fast2opt(c);
 
           offpop.sol[offpopSize++] = c;
 
